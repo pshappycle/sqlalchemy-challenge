@@ -62,16 +62,18 @@ def precipitation():
         prcp_data_dict["Date"] = prcp_data.date
         prcp_data_dict["Precipitation"] = prcp_data.prcp
         precipitation_list.append(prcp_data_dict)
-        
+
+    session.close()  
     return jsonify(precipitation_list)
-    session.close()
+    
 
 @app.route("/api/v1.0/stations")
 def stations():
     session = Session(engine)
     station_list = session.query(station.station, station.name).all()
-    return jsonify(station_list)
     session.close()
+    return jsonify(station_list)
+    
 
 
 @app.route("/api/v1.0/tobs")
@@ -90,9 +92,10 @@ def tobs():
         temp_dict['Date'] = temp.date
         temp_dict['Temperature'] = temp.tobs
         temp_list.append(temp_dict)
-
-    return jsonify(temp_list)
+    
     session.close()
+    return jsonify(temp_list)
+    
 
 @app.route("/api/v1.0/temp/<start>")
 def start(start=None):
@@ -109,8 +112,9 @@ def start(start=None):
         start_dict["Average Temp"] = avg
         start_stats.append(start_dict)
     
-    return jsonify(start_stats)
     session.close()
+    return jsonify(start_stats)
+    
 
 @app.route("/api/v1.0/temp/<start>/<end>")
 def start_end(start=None, end=None):
@@ -127,8 +131,9 @@ def start_end(start=None, end=None):
         start_end_stats_dict["Average Temp"] = avg
         start_end_stats.append(start_end_stats_dict)
     
-    return jsonify(start_end_stats)
     session.close()
+    return jsonify(start_end_stats)
+    
 if __name__ == "__main__":
     app.run(debug=True)   
 
